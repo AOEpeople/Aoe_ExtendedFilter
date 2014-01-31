@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Interface Aoe_ExtendedFilter_Model_Filter_Interface
+ * Interface Aoe_ExtendedFilter_Model_Interface
  *
  * @author Lee Saferite <lee.saferite@aoe.com>
  */
-interface Aoe_ExtendedFilter_Model_Filter_Interface extends Zend_Filter_Interface
+interface Aoe_ExtendedFilter_Model_Interface extends Zend_Filter_Interface
 {
     /**
      * Apply modifiers one by one, with specified params

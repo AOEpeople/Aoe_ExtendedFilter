@@ -17,7 +17,7 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
         if ($config && $config->children()) {
             foreach ($config->children() as $directive => $model) {
                 $handler = Mage::getModel($model);
-                if ($handler instanceof Aoe_ExtendedFilter_Model_Filter_Directive_Interface) {
+                if ($handler instanceof Aoe_ExtendedFilter_Model_Directive_Interface) {
                     $this->addDirective($directive, $handler);
                 }
             }
@@ -26,11 +26,11 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * @param                                                     $name
-     * @param Aoe_ExtendedFilter_Model_Filter_Directive_Interface $handler
+     * @param Aoe_ExtendedFilter_Model_Directive_Interface $handler
      *
      * @return $this
      */
-    public function addDirective($name, Aoe_ExtendedFilter_Model_Filter_Directive_Interface $handler)
+    public function addDirective($name, Aoe_ExtendedFilter_Model_Directive_Interface $handler)
     {
         $name = strtolower(trim($name));
         $this->directives[$name] = $handler;
@@ -52,7 +52,7 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * @param $name
      *
-     * @return Aoe_ExtendedFilter_Model_Filter_Directive_Interface|null
+     * @return Aoe_ExtendedFilter_Model_Directive_Interface|null
      */
     public function getDirective($name)
     {

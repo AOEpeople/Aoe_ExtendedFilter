@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Class Aoe_ExtendedFilter_Model_Filter_Core
+ * Class Aoe_ExtendedFilter_Model_Widget
  *
  * @author Lee Saferite <lee.saferite@aoe.com>
  */
-class Aoe_ExtendedFilter_Model_Filter_Core extends Mage_Core_Model_Email_Template_Filter implements Aoe_ExtendedFilter_Model_Filter_Interface
+class Aoe_ExtendedFilter_Model_Widget extends Mage_Widget_Model_Template_Filter implements Aoe_ExtendedFilter_Model_Interface
 {
     protected $directives;
 
@@ -44,7 +44,7 @@ class Aoe_ExtendedFilter_Model_Filter_Core extends Mage_Core_Model_Email_Templat
         /** @var $helper Aoe_ExtendedFilter_Helper_Data */
         $helper = Mage::helper('Aoe_ExtendedFilter');
         $directive = $helper->getDirective($params[1]);
-        if ($directive instanceof Aoe_ExtendedFilter_Model_Filter_Directive_Interface) {
+        if ($directive instanceof Aoe_ExtendedFilter_Model_Directive_Interface) {
             return $directive->process($this, $params);
         }
 
