@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Aoe_ExtendedFilter>
+            <version>1.0.0</version>
+        </Aoe_ExtendedFilter>
+    </modules>
+    <global>
+        <helpers>
+            <Aoe_ExtendedFilter>
+                <class>Aoe_ExtendedFilter_Helper</class>
+            </Aoe_ExtendedFilter>
+        </helpers>
+        <models>
+            <Aoe_ExtendedFilter>
+                <class>Aoe_ExtendedFilter_Model</class>
+            </Aoe_ExtendedFilter>
+            <core>
+                <rewrite>
+                    <email_template_filter>Aoe_ExtendedFilter_Model_Filter_Core</email_template_filter>
+                </rewrite>
+            </core>
+            <cms>
+                <rewrite>
+                    <template_filter>Aoe_ExtendedFilter_Model_Filter_Cms</template_filter>
+                </rewrite>
+            </cms>
+            <widget>
+                <rewrite>
+                    <template_filter>Aoe_ExtendedFilter_Model_Filter_Widget</template_filter>
+                </rewrite>
+            </widget>
+        </models>
+        <filter>
+            <directives>
+                <translate>Aoe_ExtendedFilter/Filter_Directive_Translate</translate>
+                <config>Aoe_ExtendedFilter/Filter_Directive_Config</config>
+            </directives>
+        </filter>
+    </global>
+</config>
