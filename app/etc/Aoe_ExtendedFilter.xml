@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Aoe_ExtendedFilter>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Core/>
+                <Mage_Cms/>
+                <Mage_Widget/>
+            </depends>
+        </Aoe_ExtendedFilter>
+    </modules>
+</config>
