@@ -17,14 +17,9 @@ class Aoe_ExtendedFilter_Model_Layout extends Mage_Core_Model_Layout
     protected function _generateAction($node, $parent)
     {
         if (isset($node['ifconfig']) && ($configPath = (string)$node['ifconfig'])) {
-            if (substr($configPath, 0, 1) === '!') {
-                if (Mage::getStoreConfigFlag($configPath)) {
-                    return $this;
-                }
-            } else {
-                if (!Mage::getStoreConfigFlag($configPath)) {
-                    return $this;
-                }
+            $negativeCheck = (substr($configPath, 0, 1) === '!');
+            if (Mage::getStoreConfigFlag($configPath) === $negativeCheck) {
+                return $this;
             }
         }
 
@@ -109,7 +104,7 @@ class Aoe_ExtendedFilter_Model_Layout extends Mage_Core_Model_Layout
                         $args[$key] = (string)$arg;
                     }
                 }
-                
+
                 unset($children);
             }
 
