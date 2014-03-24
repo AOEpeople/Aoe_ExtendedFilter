@@ -17,6 +17,7 @@
             </Aoe_ExtendedFilter>
             <core>
                 <rewrite>
+                    <layout>Aoe_ExtendedFilter_Model_Layout</layout>
                     <email_template_filter>Aoe_ExtendedFilter_Model_Core</email_template_filter>
                 </rewrite>
             </core>
