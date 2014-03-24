@@ -1,0 +1,17 @@
+{
+    "name": "AOEPeople/Aoe_ExtendedFilter",
+    "description": "Extended filter and layout capabilities",
+    "authors": [
+        {
+            "name": "Lee Saferite",
+            "email": "<first>.<last>@aoe.com"
+        }
+    ],
+    "type": "magento-module",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "require-dev": {
+        "ecomdev/ecomdev_phpunit": "*"
+    }
+}
