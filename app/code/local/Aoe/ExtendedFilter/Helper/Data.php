@@ -100,4 +100,124 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
 
         return null;
     }
+
+    public function getObjectData(Varien_Object $object, $key = null)
+    {
+        if ($key) {
+            return $object->getDataUsingMethod($key);
+        } else {
+            return $object->getData();
+        }
+    }
+
+    public function getSourceModelArray($modelRef, $useCollection = false)
+    {
+        $model = Mage::getSingleton($modelRef);
+        if (!$model) {
+            throw new RuntimeException($this->__('Could not create source model (%s)', $modelRef));
+        }
+
+        $useCollection = (bool)$useCollection;
+
+        if ($useCollection) {
+            if (!$model instanceof Mage_Core_Model_Abstract) {
+                throw new RuntimeException($this->__('Invalid source model type (%s)', $modelRef));
+            }
+
+            $collection = $model->getCollection();
+            if (!$collection) {
+                throw new RuntimeException($this->__('Could not create collection for source model (%s)', $modelRef));
+            }
+
+            $model = $collection;
+        }
+
+        $additionalArgs = func_get_args();
+        array_shift($additionalArgs);
+        array_shift($additionalArgs);
+
+        if (method_exists($model, 'toOptionArray')) {
+            $optionArray = call_user_func_array(array($model, 'toOptionArray'), $additionalArgs);
+        } elseif (method_exists($model, 'toOptionHash')) {
+            $optionHash = call_user_func_array(array($model, 'toOptionHash'), $additionalArgs);
+            $optionArray = array();
+            foreach ($optionHash as $value => $label) {
+                $optionArray[] = array(
+                    'value' => $value,
+                    'label' => $label
+                );
+            }
+        } else {
+            if ($useCollection) {
+                throw new RuntimeException($this->__('Source model (%s) collection does not have required method toOptionArray or toOptionHash', $modelRef));
+            } else {
+                throw new RuntimeException($this->__('Source model (%s) does not have required method toOptionArray or toOptionHash', $modelRef));
+            }
+        }
+
+        return $optionArray;
+    }
+
+    public function getSourceModelHash($modelRef, $useCollection = false)
+    {
+        $model = Mage::getSingleton($modelRef);
+        if (!$model) {
+            throw new RuntimeException($this->__('Could not create source model (%s)', $modelRef));
+        }
+
+        $useCollection = (bool)$useCollection;
+
+        if ($useCollection) {
+            if (!$model instanceof Mage_Core_Model_Abstract) {
+                throw new RuntimeException($this->__('Invalid source model type (%s)', $modelRef));
+            }
+
+            $collection = $model->getCollection();
+            if (!$collection) {
+                throw new RuntimeException($this->__('Could not create collection for source model (%s)', $modelRef));
+            }
+
+            $model = $collection;
+        }
+
+        $additionalArgs = func_get_args();
+        array_shift($additionalArgs);
+        array_shift($additionalArgs);
+
+        if (method_exists($model, 'toOptionHash')) {
+            $optionHash = call_user_func_array(array($model, 'toOptionHash'), $additionalArgs);
+        } elseif (method_exists($model, 'toOptionArray')) {
+            $optionArray = call_user_func_array(array($model, 'toOptionArray'), $additionalArgs);
+            $optionHash = array();
+            foreach ($optionArray as $option) {
+                $optionHash[$option['value']] = $option['label'];
+            }
+        } else {
+            if ($useCollection) {
+                throw new RuntimeException($this->__('Source model (%s) collection does not have required method toOptionArray or toOptionHash', $modelRef));
+            } else {
+                throw new RuntimeException($this->__('Source model (%s) does not have required method toOptionArray or toOptionHash', $modelRef));
+            }
+        }
+
+        return $optionHash;
+    }
+
+    public function filterCollection(Mage_Core_Model_Resource_Db_Collection_Abstract $collection, array $filters)
+    {
+        foreach ($filters as $field => $condition) {
+            $collection->addFieldToFilter($field, $condition);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @author Lee Saferite <lee.saferite@aoe.com>
+     * @return Mage_Admin_Model_Session
+     */
+    public function getAdminSession()
+    {
+        return Mage::getSingleton('admin/session');
+    }
 }

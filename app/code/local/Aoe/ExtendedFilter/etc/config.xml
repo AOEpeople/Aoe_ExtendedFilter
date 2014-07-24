@@ -32,6 +32,16 @@
                 </rewrite>
             </widget>
         </models>
+        <blocks>
+            <Aoe_ExtendedFilter>
+                <class>Aoe_ExtendedFilter_Block</class>
+            </Aoe_ExtendedFilter>
+            <adminhtml>
+                <rewrite>
+                    <widget_grid_column>Aoe_ExtendedFilter_Block_Widget_Grid_Column</widget_grid_column>
+                </rewrite>
+            </adminhtml>
+        </blocks>
         <filter>
             <directives>
                 <translate>Aoe_ExtendedFilter/Directive_Translate</translate>
