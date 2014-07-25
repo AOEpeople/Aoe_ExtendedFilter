@@ -63,7 +63,7 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
      */
     public function getGridUrl()
     {
-        return $this->_getUrl($this->getControllerRoute());
+        return Mage::helper('adminhtml')->getUrl($this->getControllerRoute());
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
             }
         }
 
-        return $this->_getUrl($this->getControllerRoute() . '/view', array('id' => $model->getId()));
+        return Mage::helper('adminhtml')->getUrl($this->getControllerRoute() . '/view', array('id' => $model->getId()));
     }
 
     /**
