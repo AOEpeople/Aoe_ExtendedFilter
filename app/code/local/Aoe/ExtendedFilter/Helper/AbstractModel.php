@@ -2,6 +2,7 @@
 
 /**
  * @author Lee Saferite <lee.saferite@aoe.com>
+ * @author David Robinson <david.robinson@aoe.com>
  * @since  2014-04-23
  */
 abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilter_Helper_Data
@@ -10,8 +11,6 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
      * Get the frontname and controller portion of the route
      *
      * @return string
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     abstract protected function getControllerRoute();
 
@@ -19,15 +18,11 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
      * @param $action
      *
      * @return bool
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     abstract public function getAclPermission($action);
 
     /**
      * @return string
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     abstract public function getCurrentRecordKey();
 
@@ -35,8 +30,6 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
      * Get a model instance
      *
      * @return Mage_Core_Model_Abstract
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     abstract public function getModel();
 
@@ -44,8 +37,6 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
      * Get a collection of model objects
      *
      * @return Mage_Core_Model_Resource_Db_Collection_Abstract
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     public function getCollection()
     {
@@ -56,25 +47,34 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
     }
 
     /**
-     *
      * @return string
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
-    public function getGridUrl()
+    public function getGridRoute()
     {
-        return Mage::helper('adminhtml')->getUrl($this->getControllerRoute());
+        return $this->getControllerRoute();
     }
 
     /**
-     *
+     * @return string
+     */
+    public function getGridUrl()
+    {
+        return $this->_getUrl($this->getGridRoute());
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewRoute()
+    {
+        return $this->getControllerRoute() . '/view';
+    }
+
+    /**
      * @param Mage_Core_Model_Abstract $model
      *
      * @return string
      * @throws RuntimeException
-     *
-     * @author David Robinson <david.robinson@aoe.com>
-     * @since 2014-94-22
      */
     public function getViewUrl($model = null)
     {
@@ -87,14 +87,12 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
             }
         }
 
-        return Mage::helper('adminhtml')->getUrl($this->getControllerRoute() . '/view', array('id' => $model->getId()));
+        return $this->_getUrl($this->getViewRoute(), array('id' => $model->getId()));
     }
 
     /**
      * @return Mage_Core_Model_Abstract
      * @throws RuntimeException
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     public function getCurrentRecord()
     {
@@ -117,8 +115,6 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
      *
      * @return $this
      * @throws RuntimeException
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     public function setCurrentRecord(Mage_Core_Model_Abstract $model = null)
     {

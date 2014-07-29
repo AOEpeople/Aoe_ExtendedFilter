@@ -8,30 +8,38 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModelManager extends Aoe_Extend
 {
     /**
      * @return Varien_Data_Form
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     abstract public function getForm();
 
     /**
-     *
      * @return string
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
-    public function getAddUrl()
+    public function getAddRoute()
     {
-        return $this->_getUrl($this->getControllerRoute() . '/new');
+        return $this->getControllerRoute() . '/new';
     }
 
     /**
-     *
+     * @return string
+     */
+    public function getAddUrl()
+    {
+        return $this->_getUrl($this->getAddRoute());
+    }
+
+    /**
+     * @return string
+     */
+    public function getEditRoute()
+    {
+        return $this->getControllerRoute() . '/edit';
+    }
+
+    /**
      * @param Mage_Core_Model_Abstract $model
      *
      * @return string
      * @throws RuntimeException
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     public function getEditUrl($model = null)
     {
@@ -44,16 +52,23 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModelManager extends Aoe_Extend
             }
         }
 
-        return $this->_getUrl($this->getControllerRoute() . '/edit', array('id' => $model->getId()));
+        return $this->_getUrl($this->getEditRoute(), array('id' => $model->getId()));
     }
+
+    /**
+     * @return string
+     */
+    public function getDeleteRoute()
+    {
+        return $this->getControllerRoute() . '/delete';
+    }
+
 
     /**
      * @param Mage_Core_Model_Abstract $model
      *
      * @return string
      * @throws RuntimeException
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     public function getDeleteUrl($model = null)
     {
@@ -66,6 +81,6 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModelManager extends Aoe_Extend
             }
         }
 
-        return $this->_getUrl($this->getControllerRoute() . '/delete', array('id' => $model->getId()));
+        return $this->_getUrl($this->getDeleteRoute(), array('id' => $model->getId()));
     }
 }
