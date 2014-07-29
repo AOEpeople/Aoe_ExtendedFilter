@@ -15,18 +15,19 @@ class Aoe_ExtendedFilter_Block_Widget_Grid_Column_Renderer_Action extends Mage_A
      */
     public function render(Varien_Object $row)
     {
-        $fullActions = $this->getColumn()->getActions();
+        $renderActions = array();
 
-        if (is_array($fullActions)) {
-            $renderActions = array();
-            foreach ($fullActions as $action) {
+        $actions = $this->getColumn()->getActions();
+        if (is_array($actions)) {
+            foreach ($actions as $action) {
                 if (isset($action['checks'])) {
                     $fail = false;
                     $checks = array_filter(array_map('trim', explode(',', $action['checks'])));
                     foreach ($checks as $check) {
                         $negativeCheck = (substr($check, 0, 1) === '!');
                         $check = ($negativeCheck ? substr($check, 1) : $check);
-                        if ((bool)$row->getDataUsingMethod($check) === $negativeCheck) {
+                        $value = (strpos($check, '/') === false ? $row->getDataUsingMethod($check) : $row->getData($check));
+                        if ((bool)$value === $negativeCheck) {
                             $fail = true;
                             break;
                         }
@@ -37,13 +38,33 @@ class Aoe_ExtendedFilter_Block_Widget_Grid_Column_Renderer_Action extends Mage_A
                 }
                 $renderActions[] = $action;
             }
-            $this->getColumn()->setActions($renderActions);
         }
 
-        $result = parent::render($row);
+        if (empty($renderActions)) {
+            return '&nbsp;';
+        }
 
-        $this->getColumn()->setActions($fullActions);
+        $linkLimit = ($this->getColumn()->getNoLink() ? 0 : max(intval($this->getColumn()->getLinkLimit()), 1));
 
-        return $result;
+        $out = '';
+
+        if (count($renderActions) <= $linkLimit) {
+            foreach ($renderActions as $action) {
+                if (is_array($action)) {
+                    $out .= $this->_toLinkHtml($action, $row);
+                }
+            }
+        } else {
+            $out .= '<select class="action-select" onchange="varienGridAction.execute(this);">';
+            $out .= '<option value=""></option>';
+            foreach ($renderActions as $action) {
+                if (is_array($action)) {
+                    $out .= $this->_toOptionHtml($action, $row);
+                }
+            }
+            $out .= '</select>';
+        }
+
+        return $out;
     }
 }
