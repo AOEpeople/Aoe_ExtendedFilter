@@ -101,6 +101,12 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
         return null;
     }
 
+    /**
+     * @param Varien_Object $object
+     * @param string        $key
+     *
+     * @return mixed
+     */
     public function getObjectData(Varien_Object $object, $key = null)
     {
         if ($key) {
@@ -110,6 +116,14 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
         }
     }
 
+    /**
+     * @param string $modelRef
+     * @param bool   $useCollection
+     *
+     * @return array|mixed
+     *
+     * @throws RuntimeException
+     */
     public function getSourceModelArray($modelRef, $useCollection = false)
     {
         $model = Mage::getSingleton($modelRef);
@@ -158,6 +172,14 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
         return $optionArray;
     }
 
+    /**
+     * @param string $modelRef
+     * @param bool   $useCollection
+     *
+     * @return array|mixed
+     *
+     * @throws RuntimeException
+     */
     public function getSourceModelHash($modelRef, $useCollection = false)
     {
         $model = Mage::getSingleton($modelRef);
