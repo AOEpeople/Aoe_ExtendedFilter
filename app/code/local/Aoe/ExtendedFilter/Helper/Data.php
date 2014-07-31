@@ -203,10 +203,27 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
         return $optionHash;
     }
 
-    public function filterCollection(Mage_Core_Model_Resource_Db_Collection_Abstract $collection, array $filters)
+    /**
+     * @param Mage_Core_Model_Resource_Db_Collection_Abstract $collection
+     * @param array                                           $filters
+     * @param array                                           $ifConditionals
+     *
+     * @return Mage_Core_Model_Resource_Db_Collection_Abstract
+     */
+    public function filterCollection(Mage_Core_Model_Resource_Db_Collection_Abstract $collection, array $filters, array $ifConditionals = array())
     {
-        foreach ($filters as $field => $condition) {
-            $collection->addFieldToFilter($field, $condition);
+        $filter = true;
+        foreach ($ifConditionals as $ifConditional) {
+            if ($ifConditional === 'false' || !(bool)$ifConditional) {
+                $filter = false;
+                break;
+            }
+        }
+
+        if ($filter) {
+            foreach ($filters as $field => $condition) {
+                $collection->addFieldToFilter($field, $condition);
+            }
         }
 
         return $collection;
