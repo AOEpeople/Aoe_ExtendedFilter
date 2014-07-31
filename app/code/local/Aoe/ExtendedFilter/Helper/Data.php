@@ -259,4 +259,17 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getSingleton('admin/session');
     }
+
+    /**
+     * @param string $route
+     * @param array  $params
+     *
+     * @return string
+     *
+     * @author Lee Saferite <lee.saferite@aoe.com>
+     */
+    public function getUrl($route, $params = array())
+    {
+        return $this->_getUrl($route, $params);
+    }
 }
