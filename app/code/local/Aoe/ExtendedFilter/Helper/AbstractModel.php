@@ -133,4 +133,16 @@ abstract class Aoe_ExtendedFilter_Helper_AbstractModel extends Aoe_ExtendedFilte
 
         return $this;
     }
+
+    /**
+     * Retrieve url
+     *
+     * @param   string $route
+     * @param   array $params
+     * @return  string
+     */
+    protected function _getUrl($route, $params = array())
+    {
+        return Mage::helper('adminhtml')->getUrl($route, $params);
+    }
 }
