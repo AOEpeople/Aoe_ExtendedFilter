@@ -7,24 +7,87 @@
 class Aoe_ExtendedFilter_Model_Layout extends Mage_Core_Model_Layout
 {
     /**
+     * Layout XML generation
+     *
+     * @return Aoe_ExtendedFilter_Model_Layout
+     */
+    public function generateXml()
+    {
+        $xml = $this->getUpdate()->asSimplexml();
+        $removeInstructions = $xml->xpath("//remove");
+        if (is_array($removeInstructions)) {
+            foreach ($removeInstructions as $infoNode) {
+                /** @var Mage_Core_Model_Layout_Element $infoNode */
+                if (!$this->checkConfigConditional($infoNode) || $this->checkAclConditional($infoNode, false)) {
+                    continue;
+                }
+                $blockName = trim((string)$infoNode['name']);
+                if ($blockName) {
+                    $ignoreNodes = $xml->xpath("//block[@name='" . $blockName . "'] | //reference[@name='" . $blockName . "']");
+                    if (is_array($ignoreNodes)) {
+                        foreach ($ignoreNodes as $ignoreNode) {
+                            /** @var Mage_Core_Model_Layout_Element $ignoreNode */
+                            $ignoreNode->addAttribute('ignore', true);
+                        }
+                    }
+                }
+            }
+        }
+        $this->setXml($xml);
+        return $this;
+    }
+
+    /**
+     * Create layout blocks hierarchy from layout xml configuration
+     *
+     * @param Mage_Core_Model_Layout_Element|null $parent
+     */
+    public function generateBlocks($parent = null)
+    {
+        if ($parent instanceof Mage_Core_Model_Layout_Element) {
+            // This prevents processing child blocks if the parent block fails a conditional check
+            if (!$this->checkConfigConditional($parent) || !$this->checkAclConditional($parent)) {
+                return;
+            }
+
+            // This is handled here so it catches 'block' and 'reference' elements
+            $this->processOutputAttribute($parent);
+        }
+
+        parent::generateBlocks($parent);
+    }
+
+    /**
+     * Add block object to layout based on xml node data
+     *
+     * @param Varien_Simplexml_Element $node
+     * @param Varien_Simplexml_Element $parent
+     *
+     * @return Aoe_ExtendedFilter_Model_Layout
+     */
+    protected function _generateBlock($node, $parent)
+    {
+        if ($node instanceof Mage_Core_Model_Layout_Element) {
+            if (!$this->checkConfigConditional($node) || !$this->checkAclConditional($node)) {
+                return $this;
+            }
+        }
+
+        return parent::_generateBlock($node, $parent);
+    }
+
+    /**
      * Convert an action node into a method call on the parent block
      *
      * @param Varien_Simplexml_Element $node
      * @param Varien_Simplexml_Element $parent
      *
-     * @return Mage_Core_Model_Layout
+     * @return Aoe_ExtendedFilter_Model_Layout
      */
     protected function _generateAction($node, $parent)
     {
-        if (isset($node['ifconfig']) && ($configPath = (string)$node['ifconfig'])) {
-            $negativeCheck = (substr($configPath, 0, 1) === '!');
-            if (Mage::getStoreConfigFlag($configPath) === $negativeCheck) {
-                return $this;
-            }
-        }
-
-        if (isset($node['acl']) && ($aclPath = (string)$node['acl'])) {
-            if (!Mage::getSingleton('admin/session')->isAllowed($aclPath)) {
+        if ($node instanceof Mage_Core_Model_Layout_Element) {
+            if (!$this->checkConfigConditional($node) || !$this->checkAclConditional($node)) {
                 return $this;
             }
         }
@@ -68,8 +131,6 @@ class Aoe_ExtendedFilter_Model_Layout extends Mage_Core_Model_Layout
      * @param string $currentPath
      *
      * @return array
-     *
-     * @author Lee Saferite <lee.saferite@aoe.com>
      */
     protected function processActionArgs(array $args, $jsonArgs = array(), $jsonHelper = null, $transArgs = array(), $transHelper = null, $currentPath = '')
     {
@@ -122,5 +183,79 @@ class Aoe_ExtendedFilter_Model_Layout extends Mage_Core_Model_Layout
         }
 
         return $args;
+    }
+
+    /**
+     * Process the 'output' attribute of a node
+     *
+     * This is an extension that allows the output attribute to be specified on reference elements.
+     * It also adds the ability to disable output of the node by setting the value to an empty string.
+     *
+     * @param Mage_Core_Model_Layout_Element $node
+     */
+    protected function processOutputAttribute(Mage_Core_Model_Layout_Element $node)
+    {
+        if (isset($node['output'])) {
+            $blockName = (string)$node['name'];
+            if (empty($blockName)) {
+                return;
+            }
+            $method = trim((string)$node['output']);
+            if (empty($method)) {
+                $this->removeOutputBlock($blockName);
+            } else {
+                $this->addOutputBlock($blockName, $method);
+            }
+        }
+    }
+
+    /**
+     * Process the 'ifconfig' and 'unlessconfig' attributes to possibly disable a block/reference/action
+     *
+     * @param Mage_Core_Model_Layout_Element $node
+     *
+     * @return bool
+     */
+    protected function checkConfigConditional(Mage_Core_Model_Layout_Element $node)
+    {
+        if (isset($node['ifconfig']) && ($configPath = trim((string)$node['ifconfig']))) {
+            $negativeCheck = (substr($configPath, 0, 1) === '!');
+            $configPath = ($negativeCheck ? substr($configPath, 1) : $configPath);
+            if (Mage::getStoreConfigFlag($configPath) === $negativeCheck) {
+                return false;
+            }
+        }
+
+        // This is to support compatibility with the Aoe_LayoutConditions module
+        if (isset($node['unlessconfig']) && ($configPath = trim((string)$node['unlessconfig']))) {
+            if (Mage::getStoreConfigFlag($configPath)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Process the 'acl' attributes to possibly disable a block/reference/action
+     *
+     * @param Mage_Core_Model_Layout_Element $node
+     * @param bool                           $default
+     *
+     * @return bool
+     */
+    protected function checkAclConditional(Mage_Core_Model_Layout_Element $node, $default = true)
+    {
+        if (isset($node['acl']) && ($aclPath = trim((string)$node['acl']))) {
+            $negativeCheck = (substr($aclPath, 0, 1) === '!');
+            $aclPath = ($negativeCheck ? substr($aclPath, 1) : $aclPath);
+            if (Mage::getSingleton('admin/session')->isAllowed($aclPath) === $negativeCheck) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        return (bool)$default;
     }
 }
