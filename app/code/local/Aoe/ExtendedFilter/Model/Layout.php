@@ -27,7 +27,7 @@ class Aoe_ExtendedFilter_Model_Layout extends Mage_Core_Model_Layout
                     if (is_array($ignoreNodes)) {
                         foreach ($ignoreNodes as $ignoreNode) {
                             /** @var Mage_Core_Model_Layout_Element $ignoreNode */
-                            $ignoreNode->addAttribute('ignore', true);
+                            $ignoreNode['ignore'] = true;
                         }
                     }
                 }
