@@ -13,7 +13,7 @@ class Aoe_ExtendedFilter_Block_Widget_Grid_Column extends Mage_Adminhtml_Block_W
 
     public function getFilter()
     {
-        if($this->hasData('filter') && !$this->getData('filter')) {
+        if ($this->hasData('filter') && !$this->getData('filter') && $this->getData('filter') !== null) {
             $this->setData('filter', false);
         }
 
