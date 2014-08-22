@@ -13,11 +13,22 @@ class Aoe_ExtendedFilter_Block_Widget_Grid_Column extends Mage_Adminhtml_Block_W
 
     public function getFilter()
     {
-        if ($this->hasData('filter') && !$this->getData('filter') && $this->getData('filter') !== null) {
-            $this->setData('filter', false);
+        if (!$this->_filter) {
+            if ($this->hasData('filter') && !$this->getData('filter') && $this->getData('filter') !== null) {
+                return false;
+            }
+
+            $filterClass = $this->getData('filter');
+            if (!$filterClass || $filterClass === true) {
+                $filterClass = $this->_getFilterByType();
+                if ($filterClass === false) {
+                    return false;
+                }
+            }
+            $this->_filter = $this->getLayout()->createBlock($filterClass)->setColumn($this);
         }
 
-        return parent::getFilter();
+        return $this->_filter;
     }
 
     protected function _getFilterByType()
