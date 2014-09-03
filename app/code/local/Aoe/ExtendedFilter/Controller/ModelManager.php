@@ -55,6 +55,7 @@ abstract class Aoe_ExtendedFilter_Controller_ModelManager extends Aoe_ExtendedFi
                 $model->addData($this->preprocessPostData($postData));
                 $model->save();
                 $this->_redirectUrl($this->getHelper()->getGridUrl());
+                $this->_getSession()->addSuccess('Saved Successfully');
                 return;
             } catch (Exception $e) {
                 Mage::logException($e);
