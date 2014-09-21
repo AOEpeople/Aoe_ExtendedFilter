@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Aoe_ExtendedFilter>
-            <version>1.1.0</version>
+            <version>2.0.0</version>
         </Aoe_ExtendedFilter>
     </modules>
     <global>
