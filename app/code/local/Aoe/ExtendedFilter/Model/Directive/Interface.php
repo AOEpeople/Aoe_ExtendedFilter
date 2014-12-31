@@ -9,7 +9,7 @@ interface Aoe_ExtendedFilter_Model_Directive_Interface
 {
     /**
      * @param Aoe_ExtendedFilter_Model_Interface $filter
-     * @param array                                     $params
+     * @param array                              $params
      *
      * @return mixed
      */

@@ -9,7 +9,7 @@ class Aoe_ExtendedFilter_Model_Directive_Config implements Aoe_ExtendedFilter_Mo
 {
     /**
      * @param Aoe_ExtendedFilter_Model_Interface $filter
-     * @param array                                     $params
+     * @param array                              $params
      *
      * @return mixed
      */
