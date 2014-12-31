@@ -17,7 +17,6 @@
             </Aoe_ExtendedFilter>
             <core>
                 <rewrite>
-                    <layout>Aoe_ExtendedFilter_Model_Layout</layout>
                     <email_template_filter>Aoe_ExtendedFilter_Model_Core</email_template_filter>
                 </rewrite>
             </core>
@@ -32,18 +31,6 @@
                 </rewrite>
             </widget>
         </models>
-        <blocks>
-            <Aoe_ExtendedFilter>
-                <class>Aoe_ExtendedFilter_Block</class>
-            </Aoe_ExtendedFilter>
-            <adminhtml>
-                <rewrite>
-                    <widget_grid_column>Aoe_ExtendedFilter_Block_Widget_Grid_Column</widget_grid_column>
-                    <widget_grid_column_renderer_action>Aoe_ExtendedFilter_Block_Widget_Grid_Column_Renderer_Action</widget_grid_column_renderer_action>
-                    <widget_grid_column_renderer_select>Aoe_ExtendedFilter_Block_Widget_Grid_Column_Renderer_Select</widget_grid_column_renderer_select>
-                </rewrite>
-            </adminhtml>
-        </blocks>
         <filter>
             <directives>
                 <translate>Aoe_ExtendedFilter/Directive_Translate</translate>
