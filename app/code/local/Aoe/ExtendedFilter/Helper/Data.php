@@ -66,8 +66,11 @@ class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return mixed
      */
-    public function addModifier($name, callable $callback)
+    public function addModifier($name, $callback)
     {
+        if(!is_callable($callback)) {
+            throw new InvalidArgumentException('Invalid argument type. Callbacks must be callable.');
+        }
         $this->modifiers[$name] = $callback;
         return $this;
     }
