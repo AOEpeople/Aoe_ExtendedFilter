@@ -37,7 +37,7 @@ The config.xml of this module includes two new directives, 'config' and 'transla
 The element name for your directive is the name used to call the directive.
 NB: Directive names are currently limited to 10 characters and limited to a-z. The regex pattern used is ```[a-z]{0,10}```.
 
-    <tramslate>...</translate>
+    <translate>...</translate>
     {{translate ... }}
 
 The new directive model class needs to implement the ```Aoe_ExtendedFilter_Model_Directive_Interface``` interface
