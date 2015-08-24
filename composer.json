@@ -8,6 +8,7 @@
             "email": "lee.saferite@aoe.com"
         }
     ],
+    "license": "OSL-3.0",
     "type": "magento-module",
     "require": {
         "php": ">=5.4",
