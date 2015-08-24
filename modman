@@ -1,2 +1,2 @@
 app/etc/modules/Aoe_ExtendedFilter.xml
-app/code/local/Aoe/ExtendedFilter
+app/code/community/Aoe/ExtendedFilter
