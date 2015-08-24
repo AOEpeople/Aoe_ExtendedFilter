@@ -1,18 +1,16 @@
 {
-    "name": "AOEPeople/Aoe_ExtendedFilter",
-    "description": "Extended filter capabilities",
+    "name": "aoepeople/aoe_extendedfilter",
+    "description": "Magento extensible template filter directive support",
+    "keywords": ["Magento","template","filter","directive"],
     "authors": [
         {
             "name": "Lee Saferite",
-            "email": "<first>.<last>@aoe.com"
+            "email": "lee.saferite@aoe.com"
         }
     ],
     "type": "magento-module",
     "require": {
         "php": ">=5.3",
         "magento-hackathon/magento-composer-installer": "*"
-    },
-    "require-dev": {
-        "ecomdev/ecomdev_phpunit": "*"
     }
 }
