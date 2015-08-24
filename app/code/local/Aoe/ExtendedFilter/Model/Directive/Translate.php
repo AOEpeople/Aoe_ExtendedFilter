@@ -33,7 +33,7 @@ class Aoe_ExtendedFilter_Model_Directive_Translate implements Aoe_ExtendedFilter
         array_unshift($params, $text);
 
         // Translate the text
-        $text = call_user_func_array(array($helper, '__'), $params);
+        $text = call_user_func_array([$helper, '__'], $params);
 
         // If we have modifiers, process now
         if (!empty($modifiers)) {

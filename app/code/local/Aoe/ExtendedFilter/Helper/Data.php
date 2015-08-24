@@ -8,8 +8,8 @@
  */
 class Aoe_ExtendedFilter_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    protected $directives = array();
-    protected $modifiers = array();
+    protected $directives = [];
+    protected $modifiers = [];
 
     public function __construct()
     {

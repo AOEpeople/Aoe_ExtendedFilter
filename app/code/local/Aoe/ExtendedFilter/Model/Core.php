@@ -17,11 +17,11 @@ class Aoe_ExtendedFilter_Model_Core extends Mage_Core_Model_Email_Template_Filte
     public function filter($value)
     {
         try {
-            $handlers = array(
-                self::CONSTRUCTION_DEPEND_PATTERN => array($this, 'dependDirective'),
-                self::CONSTRUCTION_IF_PATTERN     => array($this, 'ifDirective'),
-                self::CONSTRUCTION_PATTERN        => array($this, 'directiveLookup')
-            );
+            $handlers = [
+                self::CONSTRUCTION_DEPEND_PATTERN => [$this, 'dependDirective'],
+                self::CONSTRUCTION_IF_PATTERN     => [$this, 'ifDirective'],
+                self::CONSTRUCTION_PATTERN        => [$this, 'directiveLookup']
+            ];
             foreach ($handlers as $pattern => $callback) {
                 $value = preg_replace_callback($pattern, $callback, $value);
             }
@@ -48,7 +48,7 @@ class Aoe_ExtendedFilter_Model_Core extends Mage_Core_Model_Email_Template_Filte
             return $directive->process($this, $params);
         }
 
-        $legacyCallback = array($this, $params[1] . 'Directive');
+        $legacyCallback = [$this, $params[1] . 'Directive'];
         if (is_callable($legacyCallback)) {
             return call_user_func($legacyCallback, $params);
         }
